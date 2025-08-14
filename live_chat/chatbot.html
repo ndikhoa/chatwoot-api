@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Live Chat</title>
+    <style>
+        body {
+            background-image: url('https://www.aisec.com.vn/pub/media/wysiwyg/VIS_Rating-_Banner.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        /* Chỉ ẩn nút bubble mặc định của Chatwoot, không ẩn widget holder */
+        .woot-widget-bubble {
+            display: none !important;
+        }
+
+        /* Logo tùy chỉnh */
+        #chatwoot-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: url('https://res.cloudinary.com/dahzc5q6w/image/upload/v1754882165/chatbot_mzrnyq.png') no-repeat center center;
+            background-size: contain;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+        }
+
+        #chatwoot-widget:hover {
+            transform: scale(1.1);
+        }
+
+        /* Đảm bảo widget holder hiển thị đúng */
+        .woot-widget-holder {
+            z-index: 9998 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chatwoot-widget"></div>
+
+    <script>
+        // Khởi tạo Chatwoot SDK
+        (function (d, t) {
+            var BASE_URL = "https://chat-ais.dxws.io";
+            var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            g.src = BASE_URL + "/packs/js/sdk.js";
+            g.async = true;
+            s.parentNode.insertBefore(g, s);
+            g.onload = function () {
+                window.chatwootSDK.run({
+                    websiteToken: 'B8cnUKPeHqJ5x1W8UhGMLVUc',
+                    baseUrl: BASE_URL,
+                    launcherTitle: 'Chat với chúng tôi'
+                });
+            }
+        })(document, "script");
+
+        // Đợi SDK load xong rồi mới thêm event listener
+        function waitForChatwoot() {
+            if (window.chatwootSDK && typeof window.chatwootSDK.toggle === 'function') {
+                // Show Chatwoot widget when logo is clicked
+                document.getElementById('chatwoot-widget').onclick = function () {
+                    window.chatwootSDK.toggle();
+                };
+            } else {
+                // Thử lại sau 1 giây nếu SDK chưa sẵn sàng
+                setTimeout(waitForChatwoot, 1000);
+            }
+        }
+
+        // Bắt đầu kiểm tra sau khi trang load
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(waitForChatwoot, 2000); // Đợi 2 giây để SDK load
+        });
+    </script>
+</body>
+
+</html>
