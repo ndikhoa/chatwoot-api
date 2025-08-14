@@ -135,3 +135,11 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Log files
+*.log
+Logs/
+facebook-api/Logs/
+
+# Config files with sensitive data
+api-omnichannel/config.json
